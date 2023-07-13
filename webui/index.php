@@ -1,12 +1,12 @@
 <?php
+$config_file = __DIR__.'/config.php';
+if (is_readable($config_file)) {
+    @include($config_file);
+} else {
+    die("Unable to open config.php please check config.php!");
+}
 
-$boxdir = "../../box/"; // ini di /data/adb karena mundur 2 folder (../../)
-$clashlogs = $boxdir . "run/runs.log";
-$pid = $boxdir . "run/box.pid";
-$moduledir = "../../modules/box_for_root"; // sama kek $boxdir
-$ip = $_SERVER['HTTP_HOST'];
-$port = "9090";
-#header("Refresh:5");
+header("Refresh:5");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$action = $_REQUEST['actionButton'];
 	switch ($action) {

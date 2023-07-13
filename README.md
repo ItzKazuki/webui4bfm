@@ -11,6 +11,22 @@ if you want use this module. please use [magisk](https://github.com/topjohnwu/Ma
 - open 127.0.0.1:9999 
 - your webui is ready!
 
+**IMPORTANT!**
+tolong update config.php di /data/adb/webui/dashboard/config.php untuk port clash nya.
+jika ingin menggunakan custom local dns gunakan
+
+```bash
+mount -o rw,remount /system/etc/hosts
+```
+lalu edit file tsb dengan syntaks:
+ip local-dns contoh:
+```bash
+127.0.0.1 kazuki.wifi
+192.168.0.1 kazuki.wifi
+```
+
+jika di koneksi wifi/hostpot penting untuk mengetahui ip local dari prangkat tsb. dan replace ke ip seperti di atas.
+
 ## Command
 for start webui you can use:
 ```bash
@@ -27,8 +43,6 @@ for stop webui you can use:
 
 ## Next Update
 - use apache for magisk (ga ada anjay, ntr w coba buat)
-- use new ESM new version
-- update config.file for index webui
 
 ## External package
 - [Tiny File Manager](https://tinyfilemanager.github.io/)
