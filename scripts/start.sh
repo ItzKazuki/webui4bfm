@@ -5,7 +5,7 @@ if [ -n "$(magisk -v | grep lite)" ]; then
   moddir=/data/adb/lite_modules/webui4bfm
 fi
 
-scripts_dir="/data/adb/webui"
+scripts_dir="/data/adb/webui/scripts"
 busybox_path="/data/adb/magisk/busybox"
 webui_run_path="/data/adb/webui/run"
 webui_pid_file="${webui_run_path}/webui.pid"

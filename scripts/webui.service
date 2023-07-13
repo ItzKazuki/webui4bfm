@@ -1,10 +1,10 @@
 #!/system/bin/sh
 
 webui_run_path="/data/adb/webui/run"
-bfm_data_dir="/data/adb/box/clash"
+bfm_data_dir="/data/adb/webui/dashboard"
 php_bin_path="/data/data/com.termux/files/usr/bin/php"
 busybox_path="/data/adb/magisk/busybox"
-port=9999 # harusnya ini baerubah kalo ada --port= gitu :)
+port=9999 #ini akan berubah kalau di param2 ($2 ada parameter)
 
 file_start() {
     local PID=`cat ${webui_run_path}/webui.pid 2> /dev/null`
@@ -13,7 +13,7 @@ file_start() {
         exit 1
     fi
 
-    if [ -f ${php_bin_path} ] ; then
+    if [ -f ${php_bin_path} ]; then
         chown root:net_admin /data/data/com.termux/files/usr/bin/php
         chmod 0755 /data/data/com.termux/files/usr/bin/php
         nohup ${busybox_path} setuidgid 0:3005 /data/data/com.termux/files/usr/bin/php -S 0.0.0.0:${port} -t ${bfm_data_dir} > /dev/null 2>&1 &
@@ -26,22 +26,31 @@ file_start() {
 }
 
 file_stop() {
-    kill -9 `cat ${webui_run_path}/webui.pid`
-    rm -rf ${webui_run_path}/webui.pid
-    echo $date_log"info: file manager service is  stopped." >> ${webui_run_path}/webui.log
+    if [ -e ${webui_run_path}/webui.pid ]; then
+        kill -9 `cat ${webui_run_path}/webui.pid`
+        rm -rf ${webui_run_path}/webui.pid
+        echo $date_log"info: file manager service is stopped." >> ${webui_run_path}/webui.log
+    else
+        echo "Webui already stopped"
+    fi
 }
 
 while getopts ":sk" signal ; do
     case ${signal} in
         s)
             file_stop
+            if [ "$2" != "" ]; then
+               port=$2
+            fi
+
+            echo "start service on port " $port
             file_start
             ;;
         k)
             file_stop
             ;;
         ?)
-            echo ""
+            echo "usage -s for start, or -k for stop. if want custom port use -s 8080"
             ;;
     esac
 done

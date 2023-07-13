@@ -10,6 +10,8 @@ install_module() {
     ui_print "- Extracting module files"
     mkdir -p /data/adb/webui
     mkdir -p /data/adb/webui/run
+    mkdir -p /data/adb/webui/scripts
+    mkdir -p /data/adb/webui/dashboard
  
     if [ ! -d /data/adb/service.d ] ; then
         mkdir -p /data/adb/service.d
@@ -17,18 +19,18 @@ install_module() {
 
     unzip -o "${ZIPFILE}" -x 'META-INF/*' -d $MODPATH >&2
     unzip -j -o "${ZIPFILE}" 'webui_service.sh' -d /data/adb/service.d >&2
-    unzip -j -o "${ZIPFILE}" 'scripts/*' -d /data/adb/webui >&2
+    unzip -j -o "${ZIPFILE}" 'scripts/*' -d /data/adb/webui/scripts >&2
     unzip -j -o "${ZIPFILE}" 'module.prop' -d $MODPATH >&2
     unzip -j -o "${ZIPFILE}" 'service.sh' -d $MODPATH >&2
     unzip -j -o "${ZIPFILE}" 'uninstall.sh' -d $MODPATH >&2
-    unzip -o ${MODPATH}/webui.zip -d /data/adb/box/clash >&2
+    unzip -o ${MODPATH}/webui.zip -d /data/adb/webui/dashboard >&2
 
     rm -rf ${MODPATH}/webui.zip
     rm -rf ${MODPATH}/scripts
     rm -rf ${MODPATH}/webui_service.sh
 
-    sleep 1
-    ui_print "- Settings module"    
+    sleep 1   
+    ui_print "- Settings module" 
     ui_print "- Settings permission"
     set_perm_recursive $MODPATH 0 0 0755 0644
     set_perm_recursive /data/adb/webui 0 0 0755 0644
@@ -50,8 +52,9 @@ elif [ ! -f /data/data/com.termux/files/usr/bin/php ]; then
     ui_print " Open Termux"
     ui_print " pkg install php"
     abort "********************************"
-elif [ ! -d /data/adb/box/clash ]; then
-    ui_print " tidak ada folder /data/adb/box/clash"
+elif [ ! -d /data/adb/box ]; then
+    ui_print " can't find /data/adb/box"
+    ui_print "please install bfm first!"
     abort "********************************"
 else
     set -x

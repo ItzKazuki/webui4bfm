@@ -1,7 +1,7 @@
 id=webui4bfm
 name=WebUi for BFM
-version=v1.0.2
+version=v1.1.0
 versionCode=20230710
 author=kazuki
 description= for open webui, to start/stop and edit config from other devices
-updateJson=https://github.com/taamarin/ui4cfm/raw/master/update.json
+updateJson=https://github.com/ItzKazuki/webui4bfm/raw/main/update.json

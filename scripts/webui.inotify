@@ -2,7 +2,7 @@
 
 scripts=`realpath $0`
 scripts_dir=`dirname ${scripts}`
-service_path="/data/adb/webui/webui.service"
+service_path="/data/adb/webui/scripts/webui.service"
 
 events=$1
 monitor_dir=$2
@@ -23,5 +23,6 @@ service_control() {
         fi
     fi
 }
+
 create_run
 service_control
