@@ -1,0 +1,47 @@
+#!/system/bin/sh
+
+webui_run_path="/data/adb/webui/run"
+bfm_data_dir="/data/adb/box/clash"
+php_bin_path="/data/data/com.termux/files/usr/bin/php"
+busybox_path="/data/adb/magisk/busybox"
+port=9999 # harusnya ini baerubah kalo ada --port= gitu :)
+
+file_start() {
+    local PID=`cat ${webui_run_path}/webui.pid 2> /dev/null`
+    if (cat /proc/${PID}/cmdline | grep -q php) ; then
+        echo $date_log"info: file manager service is running." > ${webui_run_path}/webui.log
+        exit 1
+    fi
+
+    if [ -f ${php_bin_path} ] ; then
+        chown root:net_admin /data/data/com.termux/files/usr/bin/php
+        chmod 0755 /data/data/com.termux/files/usr/bin/php
+        nohup ${busybox_path} setuidgid 0:3005 /data/data/com.termux/files/usr/bin/php -S 0.0.0.0:${port} -t ${bfm_data_dir} > /dev/null 2>&1 &
+        echo -n $! > ${webui_run_path}/webui.pid
+        echo $date_log"info: file manager service is running (PID: `cat ${webui_run_path}/webui.pid`)" > ${webui_run_path}/webui.log
+    else
+       echo $date_log"err: php binary not detected." >> ${webui_run_path}/webui.log
+       exit 1
+    fi
+}
+
+file_stop() {
+    kill -9 `cat ${webui_run_path}/webui.pid`
+    rm -rf ${webui_run_path}/webui.pid
+    echo $date_log"info: file manager service is  stopped." >> ${webui_run_path}/webui.log
+}
+
+while getopts ":sk" signal ; do
+    case ${signal} in
+        s)
+            file_stop
+            file_start
+            ;;
+        k)
+            file_stop
+            ;;
+        ?)
+            echo ""
+            ;;
+    esac
+done
