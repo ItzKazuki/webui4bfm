@@ -25,6 +25,11 @@ for stop webui you can use:
 /data/adb/webui/scripts/webui.service -k
 ```
 
+## Next Update
+- use apache for magisk (ga ada anjay, ntr w coba buat)
+- use new ESM new version
+- update config.file for index webui
+
 ## External package
 - [Tiny File Manager](https://tinyfilemanager.github.io/)
 - [eZ Server Monitor](https://www.ezservermonitor.com/)
